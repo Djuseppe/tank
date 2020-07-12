@@ -1,2 +1,2 @@
 # tank
-Calculates tank volume as integral of a function
+Calculates tank volume of a tank as integral of a function

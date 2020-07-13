@@ -57,14 +57,20 @@ def main(h):
     # r1, r2 = 1, 1.4283 / 2
     r1, r2 = 2540 * 1e-3, 1800 * 1e-3
     sphere = integrate.quad(sphere_func, 0, h, args=(r1, r2))
-    print(f'Sphere part volume is {sphere[0]:.4f}')
+    print(f'Sphere part volume is {sphere[0]:>19.2f} m\u00b3')
 
     cylinder_r = 1800 * 1e-3
     cylinder_length = 19_000 * 1e-3
-    cylinder = get_segment(cylinder_r, get_chord(h, cylinder_r)) * cylinder_length
-    print(f'Cylinder part volume is {cylinder:.4f}')
-
-    print(f'Total volume occupied by water = {(sphere[0] * 2 + cylinder):.3f}')
+    # print(f'cyl chord = {get_chord(h, cylinder_r):.2f}')
+    cylinder_segment = get_segment(cylinder_r, get_chord(h, cylinder_r))
+    if h <= cylinder_r:
+        cylinder = cylinder_segment
+    else:
+        cylinder = math.pi * cylinder_r ** 2 - cylinder_segment
+    cylinder *= cylinder_length
+    print(f'Cylinder part volume is {cylinder:>18.2f} m\u00b3')
+    print('-' * 50)
+    print(f'Total volume occupied by water is {(sphere[0] * 2 + cylinder):>8.2f} m\u00b3')
 
 
 if __name__ == '__main__':

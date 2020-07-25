@@ -50,17 +50,20 @@ def parse_args():
     parser.add_argument('--height', type=float, required=False,
                         default=1,
                         help='Height of water in the tank [m].')
+    parser.add_argument('--length', type=float, required=False,
+                        default=19,
+                        help='Length of water in the tank [m].')
     return parser.parse_args()
 
 
-def main(h):
+def main(h, cylinder_length):
     # r1, r2 = 1, 1.4283 / 2
     r1, r2 = 2540 * 1e-3, 1800 * 1e-3
     sphere = integrate.quad(sphere_func, 0, h, args=(r1, r2))
     print(f'Sphere part volume is {sphere[0]:>19.2f} m\u00b3')
 
     cylinder_r = 1800 * 1e-3
-    cylinder_length = 19_000 * 1e-3
+    # cylinder_length = 19_000 * 1e-3
     # print(f'cyl chord = {get_chord(h, cylinder_r):.2f}')
     cylinder_segment = get_segment(cylinder_r, get_chord(h, cylinder_r))
     if h <= cylinder_r:
@@ -75,4 +78,4 @@ def main(h):
 
 if __name__ == '__main__':
     args = parse_args()
-    main(args.height)
+    main(args.height, args.length)
